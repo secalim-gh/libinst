@@ -25,7 +25,11 @@ fi
 if [[ $1 == "--add" ]]; then
 	if [[ $2 == "" ]]; then echo "Provide a git repo."; exit; fi
 	cd $source
-	git clone "https://github.com/$2.git"
+	if [[ "$2" == https://* || "$2" == git@* ]]; then
+		git clone "$2"
+	else
+		git clone "https://github.com/$2.git"
+	fi
 	cd $dest
 	exit
 fi
