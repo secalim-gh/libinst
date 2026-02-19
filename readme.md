@@ -21,6 +21,6 @@ Looks for git repos, and updates them with git pull.
 libinst --add user/repo
 ```
 Clones the provided repo and adds it to the installable libs.  
-i.e. secalim-gh/coro.git gets expanded to  
+i.e. secalim-gh/coro gets expanded to  
 https://github.com/secalim-gh/coro.git
 
