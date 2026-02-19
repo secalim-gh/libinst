@@ -1,0 +1,60 @@
+#!/bin/bash
+
+source="$HOME/.local/share/libinst/"
+dest=$(pwd)
+
+# Function to print messages in green
+log() {
+	printf "\033[32m%s\033[0m\n" "$1"
+}
+
+#
+### OPTIONS ###
+#
+
+if [[ $1 == "--update" ]]; then
+	result=($(find "$source" -name ".git" -type d -exec dirname {} \;))
+	for dir in $result; do
+		cd "$dir"
+		git pull
+	done
+	cd $dest
+	exit 0
+fi
+
+if [[ $1 == "--add" ]]; then
+	if [[ $2 == "" ]]; then echo "Provide a git repo."; exit; fi
+	cd $source
+	git clone "https://github.com/$2.git"
+	cd $dest
+	exit
+fi
+
+#
+### Main Program ###
+#
+
+if [[ $1 == "" ]]; then
+	echo "Provide filename."
+	exit 1
+fi
+
+if [[ "$1" == *.* ]] then
+	file=$1
+else
+	file="$1.*"
+fi
+
+if [[ $2 != "" ]]; then
+	dest="$dest/$2"
+fi
+
+result=($(find $source -name "$file" -type f 2>/dev/null))
+
+if [[ "${result[0]}" == "" ]]; then
+	echo "File not found."
+	exit 1
+fi
+
+cp ${result[0]} $dest
+log "$result installed 󰄬 "
